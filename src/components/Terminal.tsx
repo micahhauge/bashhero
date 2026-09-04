@@ -75,7 +75,7 @@ export function Terminal({
     <div
       ref={scrollRef}
       onClick={() => inputRef.current?.focus()}
-      className="h-64 overflow-y-auto px-4 py-3 font-mono text-sm leading-relaxed sm:text-[15px]"
+      className="h-48 overflow-y-auto px-4 py-3 font-mono text-sm leading-relaxed sm:text-[15px]"
     >
       {history.map((entry) => (
         <div key={entry.id} className="mb-1">

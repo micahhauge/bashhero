@@ -79,7 +79,7 @@ export function Playground() {
   );
 
   return (
-    <div className="flex h-[68vh] max-h-[720px] min-h-[420px] w-full flex-col overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950 shadow-2xl shadow-black/40">
+    <div className="flex h-[85vh] max-h-[880px] min-h-[480px] w-full flex-col overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950 shadow-2xl shadow-black/40">
       <div className="flex items-center gap-2 border-b border-zinc-800 bg-zinc-900 px-4 py-2.5">
         <span className="h-3 w-3 rounded-full bg-[#ff5f56]" />
         <span className="h-3 w-3 rounded-full bg-[#ffbd2e]" />

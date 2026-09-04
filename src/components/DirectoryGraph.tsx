@@ -4,8 +4,8 @@ import { useMemo } from "react";
 import { motion } from "motion/react";
 import { layoutFilesystem, pathKey, type LayoutNode, type Path } from "@/lib/filesystem";
 
-const PADDING = 70;
-const NODE_RADIUS = 30;
+const PADDING = 50;
+const NODE_RADIUS = 32;
 
 type Relation = "self" | "parent" | "child" | "other";
 
@@ -46,9 +46,12 @@ export function DirectoryGraph({
     return set;
   }, [cwd]);
 
-  const viewBox = `${bounds.minX - PADDING} ${bounds.minY - PADDING - 30} ${
+  // Extra room above the root for the traveler pin, and below the leaves for their labels.
+  const TOP_EXTRA = 34;
+  const BOTTOM_EXTRA = 46;
+  const viewBox = `${bounds.minX - PADDING} ${bounds.minY - PADDING - TOP_EXTRA} ${
     bounds.maxX - bounds.minX + PADDING * 2
-  } ${bounds.maxY - bounds.minY + PADDING * 2 + 30}`;
+  } ${bounds.maxY - bounds.minY + PADDING * 2 + TOP_EXTRA + BOTTOM_EXTRA}`;
 
   function handleNodeClick(node: LayoutNode) {
     const relation = getRelation(node, cwd);

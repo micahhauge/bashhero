@@ -106,8 +106,8 @@ export type Layout = {
   bounds: { minX: number; maxX: number; minY: number; maxY: number };
 };
 
-const SPACING_X = 150;
-const SPACING_Y = 170;
+const SPACING_X = 105;
+const SPACING_Y = 125;
 
 /** Lay out the tree: leaves get sequential x slots, parents center over their children. */
 export function layoutFilesystem(): Layout {
