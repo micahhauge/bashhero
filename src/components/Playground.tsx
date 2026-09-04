@@ -13,6 +13,7 @@ const INITIAL_HISTORY: HistoryEntry[] = [
     output: [
       "Welcome to BashHero.",
       "Try `cd projects` to move into a directory, and `cd ..` to move back up.",
+      "`cd -` jumps back to wherever you just came from.",
       "You can also click a directory in the graph.",
     ],
   },
@@ -20,6 +21,7 @@ const INITIAL_HISTORY: HistoryEntry[] = [
 
 export function Playground() {
   const [cwd, setCwd] = useState<Path>([ROOT_NAME]);
+  const [previousCwd, setPreviousCwd] = useState<Path | null>(null);
   const [history, setHistory] = useState<HistoryEntry[]>(INITIAL_HISTORY);
   const idCounter = useRef(0);
 
@@ -40,6 +42,30 @@ export function Playground() {
       const id = `cmd-${idCounter.current}`;
 
       if (cmd === "cd") {
+        if (args.trim() === "-") {
+          if (previousCwd === null) {
+            setHistory((h) => [
+              ...h,
+              {
+                id,
+                cwdAtPrompt: cwd,
+                command: trimmed,
+                output: ["bash: cd: OLDPWD not set"],
+                isError: true,
+              },
+            ]);
+          } else {
+            const target = previousCwd;
+            setHistory((h) => [
+              ...h,
+              { id, cwdAtPrompt: cwd, command: trimmed, output: [pathToString(target)] },
+            ]);
+            setPreviousCwd(cwd);
+            setCwd(target);
+          }
+          return;
+        }
+
         const result = resolveCd(cwd, args);
         if ("error" in result) {
           setHistory((h) => [
@@ -51,6 +77,7 @@ export function Playground() {
             ...h,
             { id, cwdAtPrompt: cwd, command: trimmed, output: [] },
           ]);
+          setPreviousCwd(cwd);
           setCwd(result.next);
         }
         return;
@@ -75,7 +102,7 @@ export function Playground() {
         },
       ]);
     },
-    [cwd],
+    [cwd, previousCwd],
   );
 
   return (
