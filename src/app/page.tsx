@@ -8,7 +8,7 @@ export default function Home() {
         <p className="mt-2 text-zinc-400">Learn the command line, one directory at a time.</p>
       </div>
 
-      <div className="w-full max-w-2xl">
+      <div className="w-full max-w-4xl">
         <Playground />
       </div>
     </div>

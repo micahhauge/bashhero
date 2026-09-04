@@ -13,7 +13,7 @@ const INITIAL_HISTORY: HistoryEntry[] = [
     output: [
       "Welcome to BashHero.",
       "Try `cd projects` to move into a directory, and `cd ..` to move back up.",
-      "You can also click a directory in the graph above.",
+      "You can also click a directory in the graph.",
     ],
   },
 ];
@@ -79,9 +79,13 @@ export function Playground() {
   );
 
   return (
-    <div className="flex w-full flex-col gap-6">
-      <DirectoryGraph cwd={cwd} onRunCommand={runCommand} />
-      <Terminal cwd={cwd} history={history} onSubmit={runCommand} />
+    <div className="flex w-full flex-col gap-6 lg:flex-row">
+      <div className="min-w-0 flex-1">
+        <Terminal cwd={cwd} history={history} onSubmit={runCommand} />
+      </div>
+      <div className="min-w-0 flex-1">
+        <DirectoryGraph cwd={cwd} onRunCommand={runCommand} />
+      </div>
     </div>
   );
 }

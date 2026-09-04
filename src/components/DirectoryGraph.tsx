@@ -57,8 +57,8 @@ export function DirectoryGraph({
   }
 
   return (
-    <div className="w-full rounded-xl border border-zinc-800 bg-zinc-950 p-2 shadow-2xl shadow-black/40">
-      <svg viewBox={viewBox} className="h-64 w-full sm:h-72">
+    <div className="h-full w-full rounded-xl border border-zinc-800 bg-zinc-950 p-2 shadow-2xl shadow-black/40">
+      <svg viewBox={viewBox} className="h-80 w-full lg:h-full">
         {edges.map((edge) => {
           const active = chain.has(pathKey(edge.childPath));
           return (
