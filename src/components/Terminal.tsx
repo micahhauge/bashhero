@@ -73,53 +73,42 @@ export function Terminal({
 
   return (
     <div
-      className="w-full overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950 shadow-2xl shadow-black/40"
+      ref={scrollRef}
       onClick={() => inputRef.current?.focus()}
+      className="h-64 overflow-y-auto px-4 py-3 font-mono text-sm leading-relaxed sm:text-[15px]"
     >
-      <div className="flex items-center gap-2 border-b border-zinc-800 bg-zinc-900 px-4 py-2.5">
-        <span className="h-3 w-3 rounded-full bg-[#ff5f56]" />
-        <span className="h-3 w-3 rounded-full bg-[#ffbd2e]" />
-        <span className="h-3 w-3 rounded-full bg-[#27c93f]" />
-        <span className="ml-2 text-xs text-zinc-500">bash</span>
-      </div>
-
-      <div
-        ref={scrollRef}
-        className="h-72 overflow-y-auto px-4 py-3 font-mono text-sm leading-relaxed sm:text-[15px]"
-      >
-        {history.map((entry) => (
-          <div key={entry.id} className="mb-1">
-            {entry.command && (
-              <div>
-                <Prompt cwd={entry.cwdAtPrompt} />{" "}
-                <span className="text-zinc-100">{entry.command}</span>
-              </div>
-            )}
-            {entry.output.map((line, i) => (
-              <div
-                key={i}
-                className={entry.isError ? "text-red-400" : "text-zinc-400"}
-              >
-                {line}
-              </div>
-            ))}
-          </div>
-        ))}
-
-        <div className="flex items-center">
-          <Prompt cwd={cwd} />
-          <input
-            ref={inputRef}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            className="ml-2 flex-1 bg-transparent text-zinc-100 outline-none"
-            autoFocus
-            autoCapitalize="off"
-            autoCorrect="off"
-            spellCheck={false}
-          />
+      {history.map((entry) => (
+        <div key={entry.id} className="mb-1">
+          {entry.command && (
+            <div>
+              <Prompt cwd={entry.cwdAtPrompt} />{" "}
+              <span className="text-zinc-100">{entry.command}</span>
+            </div>
+          )}
+          {entry.output.map((line, i) => (
+            <div
+              key={i}
+              className={entry.isError ? "text-red-400" : "text-zinc-400"}
+            >
+              {line}
+            </div>
+          ))}
         </div>
+      ))}
+
+      <div className="flex items-center">
+        <Prompt cwd={cwd} />
+        <input
+          ref={inputRef}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          className="ml-2 flex-1 bg-transparent text-zinc-100 outline-none"
+          autoFocus
+          autoCapitalize="off"
+          autoCorrect="off"
+          spellCheck={false}
+        />
       </div>
     </div>
   );

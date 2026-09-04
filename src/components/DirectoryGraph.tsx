@@ -4,8 +4,8 @@ import { useMemo } from "react";
 import { motion } from "motion/react";
 import { layoutFilesystem, pathKey, type LayoutNode, type Path } from "@/lib/filesystem";
 
-const PADDING = 60;
-const NODE_RADIUS = 22;
+const PADDING = 70;
+const NODE_RADIUS = 30;
 
 type Relation = "self" | "parent" | "child" | "other";
 
@@ -57,8 +57,8 @@ export function DirectoryGraph({
   }
 
   return (
-    <div className="h-full w-full rounded-xl border border-zinc-800 bg-zinc-950 p-2 shadow-2xl shadow-black/40">
-      <svg viewBox={viewBox} className="h-80 w-full lg:h-full">
+    <div className="h-full w-full">
+      <svg viewBox={viewBox} className="h-full w-full">
         {edges.map((edge) => {
           const active = chain.has(pathKey(edge.childPath));
           return (
@@ -124,9 +124,9 @@ export function DirectoryGraph({
               />
               <text
                 x={node.x}
-                y={node.y + NODE_RADIUS + 16}
+                y={node.y + NODE_RADIUS + 22}
                 textAnchor="middle"
-                className={`select-none font-mono text-[11px] ${
+                className={`select-none font-mono text-[15px] ${
                   isCurrent
                     ? "fill-emerald-300 font-semibold"
                     : onChain
@@ -146,7 +146,7 @@ export function DirectoryGraph({
           animate={{ x: current.x, y: current.y - NODE_RADIUS - 12 }}
           transition={{ type: "spring", stiffness: 300, damping: 26 }}
           textAnchor="middle"
-          fontSize={20}
+          fontSize={30}
           className="pointer-events-none select-none"
         >
           📍

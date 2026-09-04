@@ -79,13 +79,21 @@ export function Playground() {
   );
 
   return (
-    <div className="flex w-full flex-col gap-6 lg:flex-row">
-      <div className="min-w-0 flex-1">
-        <Terminal cwd={cwd} history={history} onSubmit={runCommand} />
+    <div className="flex h-full min-h-[560px] w-full flex-col overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950 shadow-2xl shadow-black/40">
+      <div className="flex items-center gap-2 border-b border-zinc-800 bg-zinc-900 px-4 py-2.5">
+        <span className="h-3 w-3 rounded-full bg-[#ff5f56]" />
+        <span className="h-3 w-3 rounded-full bg-[#ffbd2e]" />
+        <span className="h-3 w-3 rounded-full bg-[#27c93f]" />
+        <span className="ml-2 font-mono text-xs text-zinc-500">
+          bash — {pathToString(cwd)}
+        </span>
       </div>
-      <div className="min-w-0 flex-1">
+
+      <div className="min-h-0 flex-1 border-b border-zinc-800 p-4 sm:p-6">
         <DirectoryGraph cwd={cwd} onRunCommand={runCommand} />
       </div>
+
+      <Terminal cwd={cwd} history={history} onSubmit={runCommand} />
     </div>
   );
 }
