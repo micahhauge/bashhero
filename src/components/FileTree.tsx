@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { motion } from "motion/react";
 import { buildTreeRows, getRelation, pathKey, type Path } from "@/lib/filesystem";
 
 export function FileTree({
@@ -39,19 +40,30 @@ export function FileTree({
             className={`whitespace-pre leading-relaxed ${clickable ? "cursor-pointer" : ""}`}
           >
             <span className="text-zinc-700">{row.prefix}</span>
-            <span
-              className={
-                isCurrent
-                  ? "rounded bg-emerald-500/20 px-1 font-semibold text-emerald-300"
-                  : onChain
-                    ? "text-emerald-500"
-                    : clickable
-                      ? "text-zinc-400 hover:text-zinc-200"
-                      : "text-zinc-500"
-              }
-            >
-              {isCurrent ? "📂 " : "📁 "}
-              {row.name}
+            <span className="relative inline-flex items-center rounded px-1">
+              {isCurrent && (
+                <motion.span
+                  layoutId="tree-current-highlight"
+                  className="absolute inset-0 rounded bg-emerald-500/20 ring-1 ring-inset ring-emerald-400/50"
+                  initial={{ opacity: 0.6 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ type: "spring", stiffness: 420, damping: 32 }}
+                />
+              )}
+              <span
+                className={`relative z-10 transition-colors duration-300 ${
+                  isCurrent
+                    ? "font-semibold text-emerald-300"
+                    : onChain
+                      ? "text-emerald-500"
+                      : clickable
+                        ? "text-zinc-400 hover:text-zinc-200"
+                        : "text-zinc-500"
+                }`}
+              >
+                {isCurrent ? "📂 " : "📁 "}
+                {row.name}
+              </span>
             </span>
           </div>
         );
