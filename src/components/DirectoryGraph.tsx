@@ -2,31 +2,10 @@
 
 import { useMemo } from "react";
 import { motion } from "motion/react";
-import { layoutFilesystem, pathKey, type LayoutNode, type Path } from "@/lib/filesystem";
+import { getRelation, layoutFilesystem, pathKey, type LayoutNode, type Path } from "@/lib/filesystem";
 
 const PADDING = 50;
 const NODE_RADIUS = 32;
-
-type Relation = "self" | "parent" | "child" | "other";
-
-function getRelation(node: LayoutNode, cwd: Path): Relation {
-  const nodeKey = pathKey(node.path);
-  const cwdKey = pathKey(cwd);
-  if (nodeKey === cwdKey) return "self";
-  if (
-    node.path.length === cwd.length - 1 &&
-    node.path.every((seg, i) => seg === cwd[i])
-  ) {
-    return "parent";
-  }
-  if (
-    node.path.length === cwd.length + 1 &&
-    cwd.every((seg, i) => seg === node.path[i])
-  ) {
-    return "child";
-  }
-  return "other";
-}
 
 export function DirectoryGraph({
   cwd,
@@ -54,7 +33,7 @@ export function DirectoryGraph({
   } ${bounds.maxY - bounds.minY + PADDING * 2 + TOP_EXTRA + BOTTOM_EXTRA}`;
 
   function handleNodeClick(node: LayoutNode) {
-    const relation = getRelation(node, cwd);
+    const relation = getRelation(node.path, cwd);
     if (relation === "parent") onRunCommand("cd ..");
     if (relation === "child") onRunCommand(`cd ${node.name}`);
   }
@@ -98,7 +77,7 @@ export function DirectoryGraph({
 
         {nodes.map((node) => {
           const key = pathKey(node.path);
-          const relation = getRelation(node, cwd);
+          const relation = getRelation(node.path, cwd);
           const isCurrent = relation === "self";
           const onChain = chain.has(key);
           const clickable = relation === "parent" || relation === "child";

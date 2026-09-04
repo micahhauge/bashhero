@@ -82,6 +82,62 @@ export function resolveCd(cwd: Path, argRaw: string): CdResult {
   return { next };
 }
 
+// --- Relation ---------------------------------------------------------------
+
+export type Relation = "self" | "parent" | "child" | "other";
+
+/** How `nodePath` relates to `cwd` — used to decide what's clickable/highlighted. */
+export function getRelation(nodePath: Path, cwd: Path): Relation {
+  const nodeKey = pathKey(nodePath);
+  const cwdKey = pathKey(cwd);
+  if (nodeKey === cwdKey) return "self";
+  if (
+    nodePath.length === cwd.length - 1 &&
+    nodePath.every((seg, i) => seg === cwd[i])
+  ) {
+    return "parent";
+  }
+  if (
+    nodePath.length === cwd.length + 1 &&
+    cwd.every((seg, i) => seg === nodePath[i])
+  ) {
+    return "child";
+  }
+  return "other";
+}
+
+// --- Tree rows --------------------------------------------------------------
+
+export type TreeRow = {
+  path: Path;
+  name: string;
+  prefix: string;
+  hasChildren: boolean;
+};
+
+/** Flatten the tree into rows with `tree`-style connector prefixes, e.g. "│   ├── ". */
+export function buildTreeRows(): TreeRow[] {
+  const rows: TreeRow[] = [];
+
+  function visit(node: DirNode, path: Path, prefix: string, isLast: boolean, isRoot: boolean) {
+    const children = node.children ?? [];
+    rows.push({
+      path,
+      name: node.name,
+      prefix: isRoot ? "" : prefix + (isLast ? "└── " : "├── "),
+      hasChildren: children.length > 0,
+    });
+
+    const childPrefix = isRoot ? "" : prefix + (isLast ? "    " : "│   ");
+    children.forEach((child, i) => {
+      visit(child, [...path, child.name], childPrefix, i === children.length - 1, false);
+    });
+  }
+
+  visit(filesystem, [ROOT_NAME], "", true, true);
+  return rows;
+}
+
 // --- Layout ---------------------------------------------------------------
 
 export type LayoutNode = {
